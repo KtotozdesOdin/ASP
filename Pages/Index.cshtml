@@ -1,0 +1,12 @@
+﻿@page
+@model lab1ex1.Pages.IndexModel
+@{
+	@if(Model.IsCorrect)
+	{
+		<p>Name: <b>@Model.Name</b></p>
+		<p>Price: <b>@Model.Price</b></p>
+	}
+	else{
+		<p>Переданы некорректные данные </p>
+	}
+}
