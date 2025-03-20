@@ -1,10 +1,16 @@
-﻿@page
+﻿@page "{handler?}"
 @model lab1ex1.Pages.ProductModel
 <form method="post">
-	<label for="name">Название товара</label><br />
-	<input type="text" name="name" /><br />
-	<label for="price">Цена</label><br />
-	<input type="number" name="price" /><br /><br />
-	<input type="submit" value="Получить скидку" /><br />
+    <label for="name">Название товара</label><br />
+    <input type="text" name="name" /><br />
+    <label for="price">Цена</label><br />
+    <input type="number" name="price" /><br /><br />
+    <input type="submit" asp-page-handler="" value="Получить скидку" /><br />
+    <label for="discont">Введите свою скидку(%)</label><br />
+    <input type="number" name="discont" /><br />  
+    <br />
+    <input type="submit" asp-page-handler="Discont" value="С учетом своей скидки" /><br />
+    <br />
+    <input type="submit" asp-page-handler="ExtraDiscont" value="С учетом дополнительной скидки" /><br />
 </form>
 <h3>@Model.MessageRezult</h3>
