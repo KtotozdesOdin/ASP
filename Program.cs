@@ -1,3 +1,5 @@
+using lab1ex1.Services;
+
 namespace lab1ex1
 {
     public class Program
@@ -8,6 +10,12 @@ namespace lab1ex1
 
             // Add services to the container. 
             builder.Services.AddRazorPages();
+
+            //регистрация сервиса DiscountService
+            builder.Services.AddScoped<IOnPostService, OnPostService>();
+            builder.Services.AddScoped<IDiscountService, DiscountService>();
+            builder.Services.AddScoped<IExtraDiscountService, ExtraDiscountService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline. 
@@ -20,6 +28,7 @@ namespace lab1ex1
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();

@@ -1,4 +1,5 @@
 using lab1ex1.Models;
+using lab1ex1.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.Design;
@@ -8,46 +9,65 @@ namespace lab1ex1.Pages
 {
     public class ProductModel : PageModel
     {
+        private readonly IDiscountService _discountService;
+        private readonly IExtraDiscountService _extraDiscountService;
+        private readonly IOnPostService _onPostService;
+
+        public ProductModel(IDiscountService discountService, IExtraDiscountService extraDiscountService, IOnPostService onPostService)
+        {
+            _discountService = discountService;
+            _extraDiscountService = extraDiscountService;
+            _onPostService = onPostService;
+        }
         public string? MessageRezult { get; private set; }
         public bool IsCorrect { get; set; } = true;
-        public Product Product { get; set; }        
+        public Product Product { get; set; }
 
         public void OnGet()
         {
             MessageRezult = "Для товара можно определить скидку";
         }
 
-        public void OnPost(string name, decimal? price)
+        public void OnPost(string name, decimal? price, double discont)
         {
             Product = new Product();
             if (price == null || price < 0 || string.IsNullOrEmpty(name))
             {
                 MessageRezult = "Переданы некорректные данные. Повторите ввод";
                 return;
-            }
-
-            var result = price * (decimal?)0.18;
-            MessageRezult = $"Для товара {name} с ценой {price} скидка получится {result}";
+            }           
+            var result = _onPostService.CalculateDiscount(price.Value, discont);
+            MessageRezult = $"Для товара {name} с ценой {price} и скидкой {discont}% получится {result}";
             Product.Price = price;
             Product.Name = name;
         }
 
         public void OnPostDiscont(string name, decimal? price, double discont)
         {
-            Product = new Product();
-            var result = price * (decimal?)discont / 100;
+            if (price == null || price < 0 || string.IsNullOrEmpty(name))
+            {
+                MessageRezult = "Переданы некорректные данные. Повторите ввод";
+                return;
+            }
+            discont = 0.18;
+            var result = _discountService.CalculateDiscount(price.Value, discont);
             MessageRezult = $"Для товара {name} с ценой {price} и скидкой {discont} получится {result}";
             Product.Price = price;
             Product.Name = name;
-        }        
+        }
         public void OnPostExtraDiscont(string name, decimal? price, double discont)
         {
-            Product = new Product();
-            if(price > 1500)
+            if (price == null || price < 0 || string.IsNullOrEmpty(name))
             {
-                double extraDiscont = discont * 1.2;
-                var result = price * (decimal?)(1 - extraDiscont / 100);
-                MessageRezult = $"Для товара {name} с ценой {price} и дополнительной скидкой {extraDiscont}% получится {result}";
+                MessageRezult = "Переданы некорректные данные. Повторите ввод";
+                return;
+            }
+            else if (price > 1500)
+            {
+                //дополнительная скидка в 20%
+                var extraDiscount = discont * 1.2;
+                var result = _extraDiscountService.CalculateDiscount(price.Value, discont);
+                MessageRezult = $"Для товара {name} с ценой {price} и дополнительной скидкой {extraDiscount}% получится {result}";
 
             }
             else
@@ -55,8 +75,8 @@ namespace lab1ex1.Pages
                 var result = price * (decimal?)(1 - discont / 100);
                 MessageRezult = $"Ваша скидка {result}";
             }
-                Product.Price = price;
-                Product.Name = name;
+            Product.Price = price;
+            Product.Name = name;
         }
     }
 }
