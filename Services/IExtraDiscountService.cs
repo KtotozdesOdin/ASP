@@ -2,6 +2,6 @@
 {
     public interface IExtraDiscountService
     {
-        decimal CalculateDiscount(decimal price, double discount);
+        decimal CalculateExtraDiscount(decimal price, double discount);
     }
 }

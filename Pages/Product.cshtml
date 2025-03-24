@@ -6,18 +6,16 @@
 
     <label for="price">Цена</label><br />
     <input type="number" name="price" /><br /><br />
-
     <input type="submit" asp-page-handler="" value="Получить скидку" /><br />
 
     <label for="discont">Введите свою скидку(%)</label><br />
-    <input type="number" name="discont" /><br />  
+    <input type="number" name="discount" /><br />  
     <br />
-
-    <input type="submit" asp-page-handler="OnPostDiscont" value="С учетом скидки 18%" /><br />
+    <input type="submit" asp-page-handler="OnPostDiscount" value="С учетом скидки 18%" /><br />
     <br />
-    <input type="submit" asp-page-handler="Discont" value="С учетом своей скидки" /><br />
+    <input type="submit" asp-page-handler="Discount" value="С учетом своей скидки" /><br />
     <br />
-    <input type="submit" asp-page-handler="ExtraDiscont" value="С учетом дополнительной скидки" /><br />
+    <input type="submit" asp-page-handler="ExtraDiscount" value="С учетом дополнительной скидки" /><br />
 </form>
 <h3>@Model.MessageRezult</h3>
 

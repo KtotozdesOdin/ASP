@@ -6,5 +6,6 @@
         {
             return price * (decimal)(1 - discount / 100);
         }
+       
     }
 }
